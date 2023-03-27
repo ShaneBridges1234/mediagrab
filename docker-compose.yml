@@ -1,3 +1,5 @@
+#! 
+#! cd /volume1/docker/mediagrab;sudo -u root docker-compose -f docker-compose.yml up -d
 ---
 version: "3"
 
@@ -16,8 +18,8 @@ services:
     networks:
       - default
     ports:
-      #- 8989:8989
-      - 8989
+      - 8989:8989
+      #- 8989 assigns to random port
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -32,7 +34,7 @@ services:
       - /volume1/docker/radarr/config:/config
       - /volume1/Watch:/srv/media
     ports:
-      - 7878
+      - 7878:7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -44,12 +46,12 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - /volume1/docker/jackettconfig:/config
+      - /volume1/docker/jackett/config:/config
       - /volume1/Matrix/Downloads:/downloads
     networks:
       - default
     ports:
-      - 9117
+      - 9117:9117
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -64,9 +66,22 @@ services:
     networks:
       - default
     ports:
-      - 443:443
+      - 8443:443
     restart: unless-stopped
 
 networks:
   default:
     name: fileshare-network
+
+#   tunnel:
+#     container_name: cloudflared-tunnel
+#     image: cloudflare/cloudflared
+#     restart: unless-stopped
+#     command: tunnel run
+#     environment:
+#       - TUNNEL_TOKEN=mytokengoeshere
+
+# networks:
+#   default:
+#     external:
+#       name: fileshare-network
