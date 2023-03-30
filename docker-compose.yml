@@ -1,8 +1,7 @@
 #! 
-#! cd /volume1/docker/mediagrab;sudo -u root docker-compose -f docker-compose.yml up -d
+#! cd /volume1/docker/mediagrab;sudo -u root docker-compose -f docker-compose.yml up -d  --remove-orphans
 ---
 version: "3"
-
 services:
 
   sonarr:
@@ -13,7 +12,7 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - /volume1/docker/sonarr/config:/config
+      - ./sonarr/config:/config
       - /volume1/Watch:/srv/media
     networks:
       - default
@@ -31,7 +30,7 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - /volume1/docker/radarr/config:/config
+      - ./radarr/config:/config
       - /volume1/Watch:/srv/media
     ports:
       - 7878:7878
@@ -46,7 +45,7 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - /volume1/docker/jackett/config:/config
+      - ./jackett/config:/config
       - /volume1/Matrix/Downloads:/downloads
     networks:
       - default
@@ -68,6 +67,50 @@ services:
     ports:
       - 8443:443
     restart: unless-stopped
+
+  # qbittorrent-setup:
+  #   image: lscr.io/linuxserver/qbittorrent:latest
+  #   command: sh -c "/config.sh"
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Los_Angeles
+      - WEBUI_PORT=8888
+    # command: sh -c "/config.sh"
+    # command: sh config.sh
+    volumes:
+      - ./qbittorrent/config:/config
+      - /volume1/Matrix/Downloads:/downloads
+    ports:
+      - 8888:8888
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+    # command: sh -c "/config.sh"
+    # command: sh -c "/config.sh && exec myexecutable"
+    # volumes: 
+    #   - ./init.sh:/init.sh
+    # entrypoint: sh -c "/config.sh"
+    # depends_on:
+    #   - qbittorrent
+    # restart: "no"
+    # entrypoint: [ "bash", "-c", "sleep 10 && mongo --host mongo:27017 --eval 'rs.initiate()'"] 
+
+#     secrets:
+#       - qbittorrent_user
+#       - qbittorrent_password
+# #! The webui is at <your-ip>:8888 and the default username/password is admin/adminadmin
+
+# secrets:
+#   qbittorrent_user:
+#     file: ./secrets/.qbittorrent_user
+#   qbittorrent_password:
+#     file: ./secrets/.qbittorrent_password
 
 networks:
   default:

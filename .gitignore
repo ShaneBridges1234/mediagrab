@@ -1,3 +1,5 @@
 config*/*
 ssl/*
 !ssl/.gitkeep
+*ipc-socket
+*lockfile
