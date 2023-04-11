@@ -12,28 +12,19 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
     volumes:
-      - ./sonarr/config:/config
-      - /volume1/Watch:/srv/media
+      - ./sonarr/config/:/config
+      # - /volume1/Watch/TV/_new/:/media
+      - /volume1/Watch/TV/_new/_file/:/media/file
+      - /volume1/Watch/TV/_new/:/media
+      # - /volume1/Watch/TV/_new/:/data
+      # - /volume1/Watch/TV/_new:/srv/media
+      # - /volume1/Matrix/TOR/_down/:/downloads
+      # - /volume1/Matrix/TOR/blackhole/:/blackhole      
     networks:
       - default
     ports:
       - 8989:8989
       #- 8989 assigns to random port
-    mem_limit: 4096m
-    restart: unless-stopped
-
-  radarr:
-    image: linuxserver/radarr
-    container_name: radarr
-    environment:
-      - PUID=1026
-      - PGID=100
-      - TZ=America/Los_Angeles
-    volumes:
-      - ./radarr/config:/config
-      - /volume1/Watch:/srv/media
-    ports:
-      - 7878:7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -44,9 +35,12 @@ services:
       - PUID=1026
       - PGID=100
       - TZ=America/Los_Angeles
-    volumes:
-      - ./jackett/config:/config
-      - /volume1/Matrix/Downloads:/downloads
+    volumes:  #! added backslash to source dir  / ./ =\docker\mediagrab\jackett\config
+      - ./jackett/config/:/config
+      - /volume1/Watch/TV/_new//:/media/new
+      - /volume1/Watch/TV/_new/_blackhole:/media/blackhole
+      # - /volume1/Matrix/TOR/_down/:/downloads
+      # - /volume1/Matrix/TOR/blackhole/:/blackhole
     networks:
       - default
     ports:
@@ -84,7 +78,11 @@ services:
     # command: sh config.sh
     volumes:
       - ./qbittorrent/config:/config
-      - /volume1/Matrix/Downloads:/downloads
+      - /volume1/Watch/TV/_new/:/media/new
+      - /volume1/Matrix/Dropbox/Downloads/:/media/watch
+      - /volume1/Watch/TV/:/media/TV
+      - /volume1/Watch/Movies/:/media/Movies
+      # - /volume1/Matrix/Downloads:/downloads
     ports:
       - 8888:8888
       - 6881:6881
@@ -128,3 +126,22 @@ networks:
 #   default:
 #     external:
 #       name: fileshare-network
+
+#!--td cookie 04/08/2023= uid=632057; pass=8AXp5soFSfmUYjrUYYmxiAqVV43KQq2U; cf_clearance=afrved0qxW4dfjo1askG7W3o0cKeWofAdjCEXsTl4dI-1680047037-0-150
+#! 100007	TV/x264
+#! 100034	TV/x265
+
+  # radarr:
+  #   image: linuxserver/radarr
+  #   container_name: radarr
+  #   environment:
+  #     - PUID=1026
+  #     - PGID=100
+  #     - TZ=America/Los_Angeles
+  #   volumes:
+  #     - ./radarr/config:/config
+  #     - /volume1/Watch:/srv/media
+  #   ports:
+  #     - 7878:7878
+  #   mem_limit: 4096m
+  #   restart: unless-stopped

@@ -1,5 +1,54 @@
+# A * ensures that everything will be ignored.
+*
+
+# You can whitelist files/folders with !, these will not be ignored.
+!*/
+!*.yaml
+!*.yml
+!.gitignore
+!*.md
+# !*.txt
+!*.py
+!*.pyw
+!ssl/.gitkeep
+# !ssl/.gitkeep
+# !ssl/.gitkeep
+
+!jackett/config/Jackett/DataProtection/.gitkeep
+
+# \\skynet\docker\mediagrab\jackett\config\Jackett\DataProtection
+# \\skynet\docker\mediagrab\ssl
+
+# Ensure these YAML files are ignored, otherwise your secret data/credentials will leak.
+ip_bans.yaml
+secrets.yaml
+known_devices.yaml
+*token*
+*auth*
+
+# Logs
+logs
+*.log
+
+# Python cache
+__pycache__
+*.pyc
+
+# # Other
+*.uuid
+*.conf
+*.db
+*.db*
+*.mmdb
+*.db-journal
+*.xml
 config*/*
 ssl/*
-!ssl/.gitkeep
-*ipc-socket
-*lockfile
+*.cache
+*.jpg
+
+/DataProtection/*
+*keypairs/*
+*BT_backup/*
+*GeoDB/*
+
