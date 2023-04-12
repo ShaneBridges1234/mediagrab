@@ -131,6 +131,11 @@ networks:
 #! 100007	TV/x264
 #! 100034	TV/x265
 
+#! iptorrents cookie 04/11/2023= cf_clearance=vyr8bMcstgDyRdIWeODPcP42Zcb.shc1bcldqThs9uk-1681274457-0-150; uid=2113485; pass=q5HBkyqw7XXSkVhdOzgDr0jETpoEPdfB
+# user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36
+# 100005	TV/x264
+# 100099	TV/x265
+
   # radarr:
   #   image: linuxserver/radarr
   #   container_name: radarr

@@ -46,6 +46,7 @@ config*/*
 ssl/*
 *.cache
 *.jpg
+*.pid
 
 /DataProtection/*
 *keypairs/*
