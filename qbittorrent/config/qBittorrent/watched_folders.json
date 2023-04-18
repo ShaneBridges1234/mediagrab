@@ -1,12 +1,12 @@
 {
-    "/media/watch": {
+    "/watch": {
         "add_torrent_params": {
             "category": "",
             "download_limit": -1,
             "download_path": "",
             "operating_mode": "AutoManaged",
             "ratio_limit": -2,
-            "save_path": "/media/watch",
+            "save_path": "/watch",
             "seeding_time_limit": -2,
             "skip_checking": false,
             "tags": [

@@ -13,18 +13,30 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - ./sonarr/config/:/config
-      # - /volume1/Watch/TV/_new/:/media
-      - /volume1/Watch/TV/_new/_file/:/media/file
-      - /volume1/Watch/TV/_new/:/media
-      # - /volume1/Watch/TV/_new/:/data
-      # - /volume1/Watch/TV/_new:/srv/media
-      # - /volume1/Matrix/TOR/_down/:/downloads
-      # - /volume1/Matrix/TOR/blackhole/:/blackhole      
+      # - /volume1/Watch/_file/:/media/file
+      - /volume1/Watch/:/media
+      # - /volume1/Watch/TV/:/TV   
     networks:
       - default
     ports:
       - 8989:8989
       #- 8989 assigns to random port
+    mem_limit: 4096m
+    restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1026
+      - PGID=100
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./radarr/config/:/config
+      - /volume1/Watch/:/media
+      # - /volume1/Watch/Movies/:/Movies
+    ports:
+      - 7878:7878
     mem_limit: 4096m
     restart: unless-stopped
 
@@ -35,12 +47,10 @@ services:
       - PUID=1026
       - PGID=100
       - TZ=America/Los_Angeles
-    volumes:  #! added backslash to source dir  / ./ =\docker\mediagrab\jackett\config
+    volumes:
       - ./jackett/config/:/config
-      - /volume1/Watch/TV/_new//:/media/new
-      - /volume1/Watch/TV/_new/_blackhole:/media/blackhole
-      # - /volume1/Matrix/TOR/_down/:/downloads
-      # - /volume1/Matrix/TOR/blackhole/:/blackhole
+      - /volume1/Watch/:/media
+      # - /volume1/Watch/_blackhole:/media/blackhole
     networks:
       - default
     ports:
@@ -62,10 +72,6 @@ services:
       - 8443:443
     restart: unless-stopped
 
-  # qbittorrent-setup:
-  #   image: lscr.io/linuxserver/qbittorrent:latest
-  #   command: sh -c "/config.sh"
-
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
@@ -74,21 +80,23 @@ services:
       - PGID=100
       - TZ=America/Los_Angeles
       - WEBUI_PORT=8888
-    # command: sh -c "/config.sh"
-    # command: sh config.sh
     volumes:
       - ./qbittorrent/config:/config
-      - /volume1/Watch/TV/_new/:/media/new
-      - /volume1/Matrix/Dropbox/Downloads/:/media/watch
-      - /volume1/Watch/TV/:/media/TV
-      - /volume1/Watch/Movies/:/media/Movies
-      # - /volume1/Matrix/Downloads:/downloads
+      - /volume1/Watch/:/media
+      # - /volume1/Watch/TV/:/media/TV
+      # - /volume1/Watch/Movies/:/media/Movies
+      - /volume1/Matrix/Dropbox/Downloads/:/watch
     ports:
       - 8888:8888
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
 
+  # qbittorrent-setup:
+  #   image: lscr.io/linuxserver/qbittorrent:latest
+  #   command: sh -c "/config.sh"
+
+    # command: sh config.sh
     # command: sh -c "/config.sh"
     # command: sh -c "/config.sh && exec myexecutable"
     # volumes: 
@@ -126,27 +134,3 @@ networks:
 #   default:
 #     external:
 #       name: fileshare-network
-
-#!--td cookie 04/08/2023= uid=632057; pass=8AXp5soFSfmUYjrUYYmxiAqVV43KQq2U; cf_clearance=afrved0qxW4dfjo1askG7W3o0cKeWofAdjCEXsTl4dI-1680047037-0-150
-#! 100007	TV/x264
-#! 100034	TV/x265
-
-#! iptorrents cookie 04/11/2023= cf_clearance=vyr8bMcstgDyRdIWeODPcP42Zcb.shc1bcldqThs9uk-1681274457-0-150; uid=2113485; pass=q5HBkyqw7XXSkVhdOzgDr0jETpoEPdfB
-# user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36
-# 100005	TV/x264
-# 100099	TV/x265
-
-  # radarr:
-  #   image: linuxserver/radarr
-  #   container_name: radarr
-  #   environment:
-  #     - PUID=1026
-  #     - PGID=100
-  #     - TZ=America/Los_Angeles
-  #   volumes:
-  #     - ./radarr/config:/config
-  #     - /volume1/Watch:/srv/media
-  #   ports:
-  #     - 7878:7878
-  #   mem_limit: 4096m
-  #   restart: unless-stopped

@@ -1,5 +1,8 @@
 {
+    "radarr": {
+        "save_path": "/media/_new/_movie"
+    },
     "tv-sonarr": {
-        "save_path": "/media/TV"
+        "save_path": "/media/_new/_tv"
     }
 }
